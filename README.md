@@ -26,39 +26,36 @@
   <a href="https://github.com/Open-Smartwatch/open-smartwatch-os/actions/workflows/astyle.yml"><img alt="auto-format" src="https://github.com/Open-Smartwatch/open-smartwatch-os/actions/workflows/astyle.yml/badge.svg"></a>
 </p>
 
-The `master` branch is a stable version and the `develop` branch is a beta version. Recommended that you upload the `master` branch.
+The `master` branch is a stable version and the `develop` branch is our beta version. Recommended is, that you upload the `master` branch - except if you want to help us by testing the next release or need (very) new features 😉.
 
 ### Visual Studio Code
 
 Open the cloned repo in VSCode:
 
-```
+```bash
 $ code open-smartwatch-os
 ```
 
-And rename file `include/config.h.example` to `include/config.h` and adapt the values according to your requirements and press `F5` to build it.
+You may rename the file `include/config.h.example` to `include/config.h` and adapt the values according to your requirements. That config is *only applied once* after you wiped the flash of the watch or changed the config-version numer in `osw_config.h` (...).
 
 ### CLI
 
-You can instead go to the repo folder with your terminal and run
+Alternatively, you can go to the repo folder with your terminal and run...
 
-```
-$ pio run -e pico32_LIGHT_EDITION -t upload
-```
-
-respectively
-
-```
-$ pio run -e pico32_GPS_EDITION -t upload
+```bash
+$ pio run -t upload
 ```
 
-Depending on the watch model.
+If you want to compile for a specific model, you can use the `-e` flag with an `env` name from the `platformio.ini` file.
+
+## Hack it!
+To get started, take a look into the examples in the `src/apps/examples` folder - or just into any other app. If you want to compile the examples or other (by default) excluded applications, take a look into the `main.cpp` file and add the respective flags to the `platformio.ini` file.
 
 ## Debugging (CLI)
 
-If you want to print out the log for debugging, following command:
+If you want to print out the log for debugging (also including decoded exception traces), use the following command:
 
-```
+```bash
 $ pio device monitor
 ```
 
@@ -70,34 +67,33 @@ $ pio device monitor
 </p>
 
 * Wi-Fi needs to be able to connect for this to work.
-* you will need bash and ImageMagick for the helper scripts to work
+* You will need bash and ImageMagick for the helper scripts to work
+* You'll need to enable the respective feature flag to enable it (see below)
 
-The raw screenserver runs in the background and prints via serial:
-
+The raw screenserver runs in the background and should report via serial:
 ```
-Started Raw ScreenServer
-http://<IP_OF_WATCH>/api/screenserver
+Started RAW ScreenServer under http://.../api/screenserver
 ```
 
 ### HowTo
 
- * add `-D RAW_SCREEN_SERVER` to your build flags in `platformio.ini`
- * build + flash + reset watch
- * wait for the server to be started (see msg above)
- * run `bash fetchScreen.sh <IP_OF_WATCH> screenshot.png`
- * run `bash composeScreen.sh screenshot.png screenshot_composed.png`
+ * Add `-D RAW_SCREEN_SERVER` to your build flags in `platformio.ini`
+ * Build + Flash + Reboot the watch
+ * Connect + wait for the server to be started (see msg above)
+ * Run `bash fetchScreen.sh <IP_OF_WATCH> screenshot.png`
+ * Run `bash composeScreen.sh screenshot.png screenshot_composed.png`
 
 If there is no `curl`, it must be installed.
-```
+```bash
 $ apt install curl -y
 ```
-The `fetchScreen.sh` downloads the raw image buffer from the running screen server, and converts the image to png. The `composeScreen.sh` creates the image with a surrounding smartwatch (light edition).
+The `fetchScreen.sh` downloads the raw image buffer from the running screen server, and converts the image to png. The `composeScreen.sh` creates the image with a surrounding smartwatch "overlay" (light edition).
 
 #### The fast way (recommended)
 
 Run the following inside the `open-smartwatch-os` directory:
 
-```
+```bash
 $ cd scripts/screen_capture/
 $ ./createScreenshot.sh <IP_OF_WATCH> <SCREENSHOT>
 ```
@@ -110,10 +106,6 @@ For more information on troubleshooting, see [Wiki](https://open-smartwatch.gith
 
 You did not clone the repository with the `--recursive-submodules` flag.
 
-### 'LANG_STW_START' was not declared in this scope
-
-You did not rename `include/config.h.example`
-
 ### Failed to connect to ESP32: Timed out waiting for packet header
 
 You did not hold down BTN1(FLASH) and then tap the RESET button on the watch whilst platform.io was trying to connect.
@@ -123,7 +115,7 @@ You did not hold down BTN1(FLASH) and then tap the RESET button on the watch whi
 
 The OS itself can be executed as a regular program on your machine. This saves you time compiling for the watch and flashing the OS, every time you make a minor change - e.g. while developing the UI or a game, which not explicitly depend on the hardware of the watch.
 
-This also implies some limitations what you can do with the emulator, as we had to hack and reimplement some of the Arduino-specific libraries and their (conflicting) simplifications. This also means, that it maybe necessary to extend those extensions down the road as we (likely) missed that one specific function you try to use... :wink:
+This also implies some limitations what you can do with the emulator, as we had to hack and reimplement some of the Arduino-specific libraries and their (conflicting) simplifications. This also means, that it maybe necessary to extend those extensions down the road as we (likely) missed that one specific function you try to use... 😉
 
 ### Build (cmake)
 The emulator can be build using the `CMakeLists.txt` file - you may need to install additional libraries to be able to use it.

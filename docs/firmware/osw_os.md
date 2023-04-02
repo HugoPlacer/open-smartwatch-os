@@ -39,7 +39,10 @@ If you have cloned the repo without the recurse option, run `git submodule updat
 
 !!! note "Tip"
     After changing or updating/pulling a branch, run the command again to also update dependencies:
-    `git submodule update`
+    ```bash
+    git pull
+    git submodule update --init --recursive
+    ```
 
 Then, open the directory with Visual Studio Code.
 
@@ -118,8 +121,11 @@ Check the driver insertion.
 You did not clone the repository with the `--recursive-submodules` flag.
 
 !!! note "Tip"
-    After changing the branch, follow the command :
-    `git submodule update`
+    After changing or updating/pulling a branch, run the command again to also update dependencies:
+    ```bash
+    git pull
+    git submodule update --init --recursive
+    ```
 
 #### Failed to connect to ESP32: Timed out waiting for packet header
 
