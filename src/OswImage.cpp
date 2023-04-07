@@ -6,6 +6,7 @@ Graphics2D* OswImage::cbGfx = nullptr;
 unsigned int OswImage::cbOffX = 0;
 unsigned int OswImage::cbOffY = 0;
 float OswImage::cbScale = 0;
+float OswImage::cbAngle = 0;
 OswImage::Alignment OswImage::cbAlignX = OswImage::Alignment::START;
 OswImage::Alignment OswImage::cbAlignY = OswImage::Alignment::START;
 
@@ -23,7 +24,7 @@ OswImage::OswImage(const unsigned char* data, unsigned int length, unsigned shor
  * @param xAlign 
  * @param yAlign 
  */
-void OswImage::draw(Graphics2D* gfx, int x, int y, float scale, Alignment xAlign, Alignment yAlign) {
+void OswImage::draw(Graphics2D* gfx, int x, int y, float angle, float scale, Alignment xAlign, Alignment yAlign) {
     pngle_t* pngle = pngle_new();
     OswImage::cbGfx = gfx;
     OswImage::cbOffX = x;
@@ -31,6 +32,7 @@ void OswImage::draw(Graphics2D* gfx, int x, int y, float scale, Alignment xAlign
     OswImage::cbAlignX = xAlign;
     OswImage::cbAlignY = yAlign;
     OswImage::cbScale = scale;
+    OswImage::cbAngle = angle * PI / 180;
     switch(OswImage::cbAlignX) {
         case OswImage::Alignment::START:
             break;
@@ -63,8 +65,27 @@ void OswImage::drawCallback(pngle_t* pngle, unsigned int x, unsigned int y, unsi
     const unsigned char b = rgba[2];  // 0 - 255
     const unsigned char a = rgba[3];  // 0: fully transparent, 255: fully opaque
     const float scale = OswImage::cbScale;
+    const float angle = OswImage::cbAngle;
+
+    //rotation
+    int newX, newY;
+
+    //Shear 1
+    float tangent = tan(angle/2);
+    newX = x-y*tangent;
+    newY = y;
+
+    //Shear 2
+    newY=(newX*sin(angle)+newY);
+
+    //Shear 3
+    newX=(newX-newY*tangent);
+
+    //x = newX + cbOffX;
+    //y = newY + cbOffY;
 
     // We pretty much ignore alpha - and just draw the pixel if it's not transparent
     if (a > 0)
-        OswImage::cbGfx->drawPixel(OswImage::cbOffX + x * scale, OswImage::cbOffY + y * scale, rgb565(r, g, b));
+        //OswImage::cbGfx->drawPixel(OswImage::cbOffX + (x-tan(angle/2)*sin(angle)*x-2*y*tan(angle/2)+pow(tan(angle/2), 2)*sin(angle)*y) * scale, OswImage::cbOffY + (sin(angle)*x-sin(angle)*tan(angle/2)*y+y) * scale, rgb565(r, g, b));
+        OswImage::cbGfx->drawPixel(OswImage::cbOffX + newX * scale, OswImage::cbOffY + newY * scale, rgb565(r, g, b));
 }

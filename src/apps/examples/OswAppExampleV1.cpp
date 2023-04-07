@@ -30,7 +30,7 @@ void OswAppExampleV1::loop() {
 
     // Maybe draw a background image...
     if(this->showImage)
-        this->image.draw(hal->gfx(), DISP_W / 2, DISP_H / 2, 0.8, OswImage::Alignment::CENTER, OswImage::Alignment::CENTER);
+        this->image.draw(hal->gfx(), DISP_W / 2, DISP_H / 2, 0, 0.8, OswImage::Alignment::CENTER, OswImage::Alignment::CENTER);
 
     // As the variable 'red' is changed, this if loop adjusts the colour of the 'hello world' text
     hal->gfx()->setTextCenterAligned();
