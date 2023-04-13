@@ -24,7 +24,7 @@ OswImage::OswImage(const unsigned char* data, unsigned int length, unsigned shor
  * @param xAlign 
  * @param yAlign 
  */
-void OswImage::draw(Graphics2D* gfx, int x, int y, float angle, float scale, Alignment xAlign, Alignment yAlign) {
+void OswImage::draw(Graphics2D* gfx, int x, int y, int angle, float scale, Alignment xAlign, Alignment yAlign) {
     pngle_t* pngle = pngle_new();
     OswImage::cbGfx = gfx;
     OswImage::cbOffX = x;
@@ -32,7 +32,7 @@ void OswImage::draw(Graphics2D* gfx, int x, int y, float angle, float scale, Ali
     OswImage::cbAlignX = xAlign;
     OswImage::cbAlignY = yAlign;
     OswImage::cbScale = scale;
-    OswImage::cbAngle = angle * PI / 180;
+    OswImage::cbAngle = (angle % 360) * PI / 180;
     switch(OswImage::cbAlignX) {
         case OswImage::Alignment::START:
             break;
@@ -70,19 +70,71 @@ void OswImage::drawCallback(pngle_t* pngle, unsigned int x, unsigned int y, unsi
     //rotation
     int newX, newY;
 
-    //Shear 1
-    float tangent = tan(angle/2);
-    newX = x-y*tangent;
-    newY = y;
+    /*if(angle <= PI)
+    {
+        //Shear 1
+        float tangent = tan(angle/2);
+        newX = x-y*tangent;
+        newY = y;
 
-    //Shear 2
-    newY=(newX*sin(angle)+newY);
+        //Shear 2
+        newY=(newX*sin(angle)+newY);
 
-    //Shear 3
-    newX=(newX-newY*tangent);
+        //Shear 3
+        newX=(newX-newY*tangent);
+    }
+    else if (angle > PI) //creo que lo que he hecho de los angulos no sirve para nada :/
+    {
+        //Shear 1
+        float tangent = tan(-(2*PI - angle)/2);
+        newX = x-y*tangent;
+        newY = y;
 
-    //x = newX + cbOffX;
-    //y = newY + cbOffY;
+        //Shear 2
+        newY=(newX*sin(-(2*PI - angle))+newY);
+
+        //Shear 3
+        newX=(newX-newY*tangent);
+    }*/
+
+    if(angle <= 90 * PI / 180)
+    {
+        //Shear 1
+        float tangent = tan(angle/2);
+        newX = x-y*tangent;
+        newY = y;
+
+        //Shear 2
+        newY=(newX*sin(angle)+newY);
+
+        //Shear 3
+        newX=(newX-newY*tangent);
+    }
+    else if (angle > 90 * PI / 180 && angle <= 180 * PI / 180)
+    {
+        //Shear 1
+        float tangent = tan(90/2);
+        newX = x-y*tangent;
+        newY = y;
+
+        //Shear 2
+        newY=(newX*sin(90)+newY);
+
+        //Shear 3
+        newX=(newX-newY*tangent);
+
+        //Shear 1
+        tangent += tan((angle - (90 * PI / 180))/2);
+        newX = x-y*tangent;
+        newY = y;
+
+        //Shear 2
+        newY=(newX*sin(angle - (90 * PI / 180))+newY);
+
+        //Shear 3
+        newX=(newX-newY*tangent);
+    }
+
 
     // We pretty much ignore alpha - and just draw the pixel if it's not transparent
     if (a > 0)

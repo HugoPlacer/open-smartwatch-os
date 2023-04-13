@@ -4,8 +4,15 @@
 
 #include "apps/examples/HugoTest.h"
 #include "assets/img/static/hugo.png.h"
+#include "assets/img/static/swimming-pool.png.h"
+#include "assets/img/static/man.png.h"
+#include "assets/img/static/duck.png.h"
 
-OswAppHugoTest::OswAppHugoTest(): image(hugo_png, hugo_png_length, hugo_png_width, hugo_png_height)  {
+OswAppHugoTest::OswAppHugoTest(): image(hugo_png, hugo_png_length, hugo_png_width, hugo_png_height),
+                                  bg(swimming_pool_png, swimming_pool_png_length, swimming_pool_png_width, swimming_pool_png_height),
+                                  man(man_png, man_png_length, man_png_width, man_png_height),
+                                  duck(duck_png, duck_png_length, duck_png_width, duck_png_height)
+ {
 
 }
 
@@ -63,12 +70,14 @@ void OswAppHugoTest::onDraw() {
     //hal->gfx()->drawThickTick(DISP_W * 0.5, DISP_H * 0.5, 0, 16, 180 + ( 360.0 / 60.0 * second ), 1, ui->getForegroundColor());
     //hal->gfx()->drawThickTick(DISP_W * 0.5, DISP_H * 0.5, 50, 60, counter, 4, ui->getForegroundColor());
 
-    this->image.draw(hal->gfx(), DISP_W * 0.5, DISP_H * 0.5, counter, 1.0, OswImage::Alignment::CENTER, OswImage::Alignment::CENTER);
-
     uint32_t second = 0;
     uint32_t minute = 0;
     uint32_t hour = 0;
     hal->getLocalTime(&hour, &minute, &second);
+
+    this->bg.draw(hal->gfx(), DISP_W * 0.5, DISP_H * 0.5, 0, 1.0, OswImage::Alignment::CENTER, OswImage::Alignment::CENTER);
+    this->man.draw(hal->gfx(), rpx(DISP_W * 0.5, 30, 360.0 / 12.0 * (1.0 * hour + minute / 60.0)), rpy(DISP_W * 0.5, 60, 360.0 / 12.0 * (1.0 * hour + minute / 60.0)), 0, 1.0, OswImage::Alignment::CENTER, OswImage::Alignment::CENTER);
+    this->duck.draw(hal->gfx(), rpx(DISP_W * 0.5, 100, 360.0 / 60.0 * (1.0 * minute + second / 60.0)), rpy(DISP_W * 0.5, 80, 360.0 / 60.0 * (1.0 * minute + second / 60.0)), 0, 1.0, OswImage::Alignment::CENTER, OswImage::Alignment::CENTER);
 
     hal->gfx()->fillCircle(rpx(DISP_W * 0.5, 100, 360.0 / 60.0 * second), rpy(DISP_W * 0.5, 100, 360.0 / 60.0 * second), 5, ui->getForegroundColor());
     hal->gfx()->fillCircle(rpx(DISP_W * 0.5, 80, 360.0 / 60.0 * (1.0 * minute + second / 60.0)), rpy(DISP_W * 0.5, 80, 360.0 / 60.0 * (1.0 * minute + second / 60.0)), 5, ui->getForegroundColor());

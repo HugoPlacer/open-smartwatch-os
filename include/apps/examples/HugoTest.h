@@ -21,4 +21,7 @@ class OswAppHugoTest : public OswAppV2 {
     // define global scope variables
     float counter;
     OswImage image;
+    OswImage bg;
+    OswImage man;
+    OswImage duck;
 };
