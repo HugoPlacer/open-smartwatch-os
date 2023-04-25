@@ -28,6 +28,7 @@
 #endif
 #include "./apps/games/brick_breaker.h"
 #include "./apps/games/snake_game.h"
+#include "./apps/games/simon_game.h"
 #ifdef OSW_FEATURE_WIFI
 #include "./apps/tools/OswAppWebserver.h"
 #endif
@@ -183,6 +184,7 @@ void loop() {
 #endif
         // For a short howto write your own apps see: app below
         // mainAppSwitcher.registerApp(new OswAppHelloWorld());
+        mainAppSwitcher.registerApp(new OswAppSimonGame());
 
         // Fitness App
 #ifdef OSW_FEATURE_STATS_STEPS
