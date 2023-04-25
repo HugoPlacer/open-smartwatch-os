@@ -113,4 +113,5 @@ void OswAppSimonGame::checker(int *order){
             gameRunning = false;
         }
     }
+    pOrder.clear();
 }
