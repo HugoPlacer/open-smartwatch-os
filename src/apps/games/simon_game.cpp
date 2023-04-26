@@ -7,8 +7,7 @@
 #include <osw_hal.h>
 
 void OswAppSimonGame::setup() {
-    std::srand((unsigned) time(NULL));
-    colors.push_back(rand() % 3 + 1);
+    colors.push_back(random(1, 4));
 }
 
 void OswAppSimonGame::loop() {
@@ -22,15 +21,15 @@ void OswAppSimonGame::stop() {
 void OswAppSimonGame::buttonController(){
     OswHal* hal = OswHal::getInstance();
      if(hal->btnHasGoneDown(BUTTON_1)){
-            pOrder.push_back(1);
+            playerOrder.push_back(1);
          }
 
           if(hal->btnHasGoneDown(BUTTON_2)){
-            pOrder.push_back(2);
+            playerOrder.push_back(2);
          }
 
           if(hal->btnHasGoneDown(BUTTON_3)){
-            pOrder.push_back(3);
+            playerOrder.push_back(3);
          }
 }
 
@@ -55,15 +54,14 @@ void OswAppSimonGame::simonGame(){
         buttonController();
         displayColors();
 
-        int playerOrder[colors.size()];
-
-        //playerTurn(playerOrder);
-        if(pOrder.size() == colors.size()){
-            checker(playerOrder);
-            colors.push_back(rand() % 3 + 1);
+        //playerTurn();
+        if(playerOrder.size() == colors.size()){
+            checker();
+            colors.push_back(random(1, 4));
         }
     }
     else{
+        colors.clear();
         waitingRoom();
     }
 }
@@ -82,7 +80,7 @@ void OswAppSimonGame::displayColors(){
     }
 }
 
-void OswAppSimonGame::playerTurn(int *order){
+void OswAppSimonGame::playerTurn(){
     OSW_LOG_D("PlayerTurn");
      OswHal* hal = OswHal::getInstance();
 
@@ -91,27 +89,27 @@ void OswAppSimonGame::playerTurn(int *order){
     while(i < colors.size()){
         
          if(hal->btnHasGoneDown(BUTTON_1)){
-            order[i] = 1;
+            //order[i] = 1;
             i++;
          }
 
           if(hal->btnHasGoneDown(BUTTON_2)){
-            order[i] = 2;
+            //order[i] = 2;
             i++;
          }
 
           if(hal->btnHasGoneDown(BUTTON_3)){
-            order[i] = 3;
+            //order[i] = 3;
             i++;
          }
     }
 }
 
-void OswAppSimonGame::checker(int *order){
+void OswAppSimonGame::checker(){
     for(int i = 0; i < colors.size(); i++){
-        if(pOrder[i] != colors[i]){
+        if(playerOrder[i] != colors[i]){
             gameRunning = false;
         }
     }
-    pOrder.clear();
+    playerOrder.clear();
 }

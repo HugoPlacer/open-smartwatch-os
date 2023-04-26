@@ -6,7 +6,6 @@
 
 #include "osw_app.h"
 
-#include <iostream>
 #include <vector>
 
 class OswAppSimonGame  : public OswApp {
@@ -22,11 +21,11 @@ class OswAppSimonGame  : public OswApp {
   private:
     OswUI* ui;
 
-    std::vector<int> colors;
-    std::vector<int> pOrder;
+    std::vector<uint8_t> colors;
+    std::vector<uint8_t> playerOrder;
 
-    int score = 1;
-    int prevTime = 0;
+    uint8_t score = 1;
+    uint8_t prevTime = 0;
 
     bool gameRunning = false;
 
@@ -34,8 +33,8 @@ class OswAppSimonGame  : public OswApp {
     void simonGame();
     void waitingRoom();
     void displayColors();
-    void playerTurn(int *order);
-    void checker(int *order);
+    void playerTurn();
+    void checker();
     void buttonController();
     // Controls
 };
