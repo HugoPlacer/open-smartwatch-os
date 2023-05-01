@@ -25,7 +25,8 @@ class OswAppSimonGame  : public OswApp {
     std::vector<uint8_t> playerOrder;
 
     uint8_t score = 1;
-    uint8_t prevTime = 0;
+    unsigned long prevTime = 0;
+    uint8_t printIdx = 0;
 
     bool gameRunning = false;
 

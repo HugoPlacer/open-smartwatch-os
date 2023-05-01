@@ -48,7 +48,7 @@ void OswAppSimonGame::waitingRoom(){
 }
 
 void OswAppSimonGame::simonGame(){
-    OSW_LOG_D("simonGame");
+    //OSW_LOG_D("simonGame");
 
     if(gameRunning){
         buttonController();
@@ -67,7 +67,7 @@ void OswAppSimonGame::simonGame(){
 }
 
 void OswAppSimonGame::displayColors(){
-    OSW_LOG_D("displayColors");
+    //OSW_LOG_D("displayColors");
     OswHal* hal = OswHal::getInstance();
 
     hal->gfx()->fill(0);
@@ -75,9 +75,48 @@ void OswAppSimonGame::displayColors(){
     hal->gfx()->setTextColor(rgb565(255, 255, 255));
     hal->gfx()->setTextCursor(50, 120);
 
-    for(int i = 0; i < colors.size(); i++){
-        hal->gfx()->print(colors[i]);
-    }
+   /*  for(int i = 0; i < colors.size(); i++){
+        if(time(nullptr) % 2 == 0){
+            hal->gfx()->print(colors[i]);
+            prevTime = time(nullptr);
+        }
+        else{
+            break;
+        }
+    } */
+    
+     /* if(prevTime != time(nullptr)){
+        for(int i = 0; i < printIdx; i++){
+            hal->gfx()->print(colors[i]);
+        }
+     }
+     else if(printIdx <= colors.size()){
+        printIdx++;
+        prevTime = time(nullptr);
+     } */
+    unsigned long currentMillis = millis();
+     if(currentMillis - prevTime >= 1000){
+        prevTime = currentMillis;
+        OSW_LOG_D("Increase prevTime");
+        if(printIdx < colors.size()){
+            printIdx++;
+            OSW_LOG_D("Increase printIdx");
+        }
+     }
+     else{
+        if(printIdx < colors.size()){
+            OSW_LOG_D("Print number");
+            hal->gfx()->print(colors[printIdx]);
+        }
+     }
+
+    /* hal->gfx()->print(colors[printIdx]);
+
+    if(printIdx < colors.size() - 1 && prevTime != time(nullptr)){
+        printIdx++;
+        prevTime = time(nullptr);
+    } */
+
 }
 
 void OswAppSimonGame::playerTurn(){
@@ -112,4 +151,5 @@ void OswAppSimonGame::checker(){
         }
     }
     playerOrder.clear();
+    printIdx = 0;
 }
