@@ -75,6 +75,10 @@ void OswAppSimonGame::displayColors(){
     hal->gfx()->setTextColor(rgb565(255, 255, 255));
     hal->gfx()->setTextCursor(50, 50);
 
+    hal->gfx()->fillFrame(0, 120, 120, 120, dimColor(ui->getWarningColor(), 60));
+    hal->gfx()->fillFrame(120, 120, 120, 120, dimColor(ui->getDangerColor(), 60));
+    hal->gfx()->fillFrame(120, 0, 120, 120, dimColor(ui->getSuccessColor(), 60));
+
     uint32_t currentMillis = millis();
      if(currentMillis - prevTime >= 1000){
         prevTime = currentMillis;
