@@ -85,27 +85,26 @@ void OswAppSimonGame::displayColors(){
      else{
         if(printIdx < colors.size()){
             hal->gfx()->print(colors[printIdx]);
-            uint16_t frameColor = rgb565(255, 255, 255);
 
             switch (colors[printIdx])
             {
             case 1:
-                frameColor = rgb565(255, 0, 0);
+                hal->gfx()->fillFrame(0, 120, 120, 120, ui->getWarningColor());
                 break;
             
             case 2:
-                frameColor = rgb565(0, 255, 0);
+                hal->gfx()->fillFrame(120, 120, 120, 120, ui->getDangerColor());
                 break;
             
             case 3:
-                frameColor = rgb565(0, 0, 255);
+                hal->gfx()->fillFrame(120, 0, 120, 120, ui->getSuccessColor());
                 break;
             
             default:
                 break;
             }
 
-            hal->gfx()->fillFrame(120, 120, 50, 50, frameColor);
+            
         }
      }
 }
