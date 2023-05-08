@@ -34,7 +34,6 @@ class OswAppSimonGame  : public OswApp {
     void simonGame();
     void waitingRoom();
     void displayColors();
-    void playerTurn();
     void checker();
     void buttonController();
     // Controls

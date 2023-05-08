@@ -54,7 +54,6 @@ void OswAppSimonGame::simonGame(){
         buttonController();
         displayColors();
 
-        //playerTurn();
         if(playerOrder.size() == colors.size()){
             checker();
             colors.push_back(random(1, 4));
@@ -111,31 +110,6 @@ void OswAppSimonGame::displayColors(){
             
         }
      }
-}
-
-void OswAppSimonGame::playerTurn(){
-    OSW_LOG_D("PlayerTurn");
-     OswHal* hal = OswHal::getInstance();
-
-    int i = 0;
-
-    while(i < colors.size()){
-        
-         if(hal->btnHasGoneDown(BUTTON_1)){
-            //order[i] = 1;
-            i++;
-         }
-
-          if(hal->btnHasGoneDown(BUTTON_2)){
-            //order[i] = 2;
-            i++;
-         }
-
-          if(hal->btnHasGoneDown(BUTTON_3)){
-            //order[i] = 3;
-            i++;
-         }
-    }
 }
 
 void OswAppSimonGame::checker(){
