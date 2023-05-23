@@ -70,6 +70,7 @@ void OswAppSimonGame::simonGame(){
     }
     else{
         colors.clear();
+        score = 0;
         waitingRoom();
     }
 }
@@ -87,6 +88,10 @@ void OswAppSimonGame::displayColors(){
     hal->gfx()->fillFrame(120, 120, 120, 120, dimColor(ui->getDangerColor(), 60));
     hal->gfx()->fillFrame(120, 0, 120, 120, dimColor(ui->getSuccessColor(), 60));
 
+    hal->gfx()->print("Score");
+    hal->gfx()->setTextCursor(74, 70);
+    hal->gfx()->print(score);
+
     uint32_t currentMillis = millis();
      if(currentMillis - prevTime >= 1000){
         prevTime = currentMillis;
@@ -97,7 +102,7 @@ void OswAppSimonGame::displayColors(){
      else{
         if(printIdx < colors.size()){
             //DEBUG colorID
-            hal->gfx()->print(colors[printIdx]);
+            //hal->gfx()->print(colors[printIdx]);
 
             switch (colors[printIdx])
             {
@@ -128,6 +133,7 @@ void OswAppSimonGame::checker(){
             gameRunning = false;
         }
     }
+    if(gameRunning) score++;
     playerOrder.clear();
     printIdx = 0;
 }
@@ -137,4 +143,4 @@ void OswAppSimonGame::checker(){
     Difficulty levels
     Accelerates colors frequency with time
     Fix first color appear too quickly
-    Display Score */
+     */

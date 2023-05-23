@@ -206,10 +206,13 @@
  * Apps:
  */
 #ifndef GAME_SNAKE
-#define GAME_SNAKE 0
+#define GAME_SNAKE 1
 #endif
 #ifndef GAME_BRICK_BREAKER
-#define GAME_BRICK_BREAKER 0
+#define GAME_BRICK_BREAKER 1
+#endif
+#ifndef GAME_SIMON
+#define GAME_SIMON 1
 #endif
 #ifndef TOOL_FLASHLIGHT
 #define TOOL_FLASHLIGHT 1

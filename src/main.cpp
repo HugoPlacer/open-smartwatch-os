@@ -184,7 +184,6 @@ void loop() {
 #endif
         // For a short howto write your own apps see: app below
         // mainAppSwitcher.registerApp(new OswAppHelloWorld());
-        mainAppSwitcher.registerApp(new OswAppSimonGame());
 
         // Fitness App
 #ifdef OSW_FEATURE_STATS_STEPS
@@ -235,6 +234,10 @@ void loop() {
 
 #if GAME_BRICK_BREAKER == 1
         mainAppSwitcher.registerApp(new OswAppBrickBreaker());
+#endif
+
+#if GAME_SIMON == 1
+        mainAppSwitcher.registerApp(new OswAppSimonGame());
 #endif
 
 #ifdef OSW_FEATURE_LUA
