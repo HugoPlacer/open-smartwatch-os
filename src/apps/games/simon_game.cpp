@@ -37,10 +37,19 @@ void OswAppSimonGame::waitingRoom(){
     OswHal* hal = OswHal::getInstance();
 
     hal->gfx()->fill(0);
+
+    hal->gfx()->fillFrame(0, 120, 120, 120, dimColor(ui->getWarningColor(), 60));
+    hal->gfx()->fillFrame(120, 120, 120, 120, dimColor(ui->getDangerColor(), 60));
+    hal->gfx()->fillFrame(120, 0, 120, 120, dimColor(ui->getSuccessColor(), 60));
+
     hal->gfx()->setTextSize(2);
     hal->gfx()->setTextColor(rgb565(255, 255, 255));
-    hal->gfx()->setTextCursor(30, 120);
+    hal->gfx()->setTextCursor(25, 120);
     hal->gfx()->print("Welcome to Simon!");
+
+    hal->gfx()->setTextSize(2);
+    hal->gfx()->setTextCursor(150, 48);
+    hal->gfx()->print("Start");
 
     if (hal->btnHasGoneDown(BUTTON_3)){
         gameRunning = true;
@@ -87,6 +96,7 @@ void OswAppSimonGame::displayColors(){
      }
      else{
         if(printIdx < colors.size()){
+            //DEBUG colorID
             hal->gfx()->print(colors[printIdx]);
 
             switch (colors[printIdx])
@@ -121,3 +131,10 @@ void OswAppSimonGame::checker(){
     playerOrder.clear();
     printIdx = 0;
 }
+
+/* TODO LIST:
+    
+    Difficulty levels
+    Accelerates colors frequency with time
+    Fix first color appear too quickly
+    Display Score */
