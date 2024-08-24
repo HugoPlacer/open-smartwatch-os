@@ -14,7 +14,7 @@ class OswImage {
 
     OswImage(const unsigned char* data, unsigned int length, unsigned short width, unsigned short height);
 
-    void draw(Graphics2D* gfx, int x, int y, float scale = 1, Alignment xAlign = Alignment::START, Alignment yAlign = Alignment::START);
+    void draw(Graphics2D* gfx, int x, int y, float scale = 1, float angle = 0, Alignment xAlign = Alignment::START, Alignment yAlign = Alignment::START);
   private:
     static Graphics2D* cbGfx;
     static unsigned int cbOffX;
@@ -22,6 +22,9 @@ class OswImage {
     static Alignment cbAlignX;
     static Alignment cbAlignY;
     static float cbScale;
+    static float cbAngle;
+    static unsigned short cbWidth;
+    static unsigned short cbHeight;
     const unsigned char* data;
     const unsigned int length;
     const unsigned short width;

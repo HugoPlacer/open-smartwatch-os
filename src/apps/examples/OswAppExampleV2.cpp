@@ -4,8 +4,9 @@
 
 #include "apps/examples/OswAppExampleV2.h"
 #include "assets/img/static/example.png.h"
+#include "assets/img/static/man.png.h"
 
-OswAppExampleV2::OswAppExampleV2(): image(example_png, example_png_length, example_png_width, example_png_height) {
+OswAppExampleV2::OswAppExampleV2(): image(man_png, man_png_length, man_png_width, man_png_height) {
 
 }
 
@@ -41,6 +42,7 @@ void OswAppExampleV2::onLoop() {
 
     // We request a redraw if the value has changed or one second passed (for the counter)
     this->needsRedraw = this->needsRedraw or counter != time(nullptr);
+    this->needsRedraw = true;
 }
 
 void OswAppExampleV2::onDraw() {
@@ -48,8 +50,11 @@ void OswAppExampleV2::onDraw() {
     this->counter = time(nullptr); // update the counter
 
     // Maybe draw a background image...
-    if(this->showImage)
-        this->image.draw(hal->gfx(), DISP_W / 2, DISP_H / 2, 0.8, OswImage::Alignment::CENTER, OswImage::Alignment::CENTER);
+    //if(this->showImage)
+
+    static float angle = 0.0;
+    angle += 0.01;
+    this->image.draw(hal->gfx(), DISP_W / 2, DISP_H / 2, 1.0, angle, OswImage::Alignment::START, OswImage::Alignment::START);
 
     // As the variable 'red' is changed, this if-conditional adjusts the colour of the 'hello world' text
     hal->gfx()->setTextCenterAligned();

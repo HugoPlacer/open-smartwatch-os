@@ -6,8 +6,13 @@ Graphics2D* OswImage::cbGfx = nullptr;
 unsigned int OswImage::cbOffX = 0;
 unsigned int OswImage::cbOffY = 0;
 float OswImage::cbScale = 0;
+float OswImage::cbAngle = 0;
+unsigned short OswImage::cbWidth = 0;
+unsigned short OswImage::cbHeight = 0;
 OswImage::Alignment OswImage::cbAlignX = OswImage::Alignment::START;
 OswImage::Alignment OswImage::cbAlignY = OswImage::Alignment::START;
+
+
 
 OswImage::OswImage(const unsigned char* data, unsigned int length, unsigned short width, unsigned short height): data(data), length(length), width(width), height(height) {
 
@@ -23,7 +28,7 @@ OswImage::OswImage(const unsigned char* data, unsigned int length, unsigned shor
  * @param xAlign
  * @param yAlign
  */
-void OswImage::draw(Graphics2D* gfx, int x, int y, float scale, Alignment xAlign, Alignment yAlign) {
+void OswImage::draw(Graphics2D* gfx, int x, int y, float scale, float angle, Alignment xAlign, Alignment yAlign) {
     pngle_t* pngle = pngle_new();
     OswImage::cbGfx = gfx;
     OswImage::cbOffX = x;
@@ -31,6 +36,9 @@ void OswImage::draw(Graphics2D* gfx, int x, int y, float scale, Alignment xAlign
     OswImage::cbAlignX = xAlign;
     OswImage::cbAlignY = yAlign;
     OswImage::cbScale = scale;
+    OswImage::cbAngle = angle;
+    OswImage::cbWidth = this->width;
+    OswImage::cbHeight = this->height;
     switch(OswImage::cbAlignX) {
     case OswImage::Alignment::START:
         break;
@@ -63,8 +71,38 @@ void OswImage::drawCallback(pngle_t* pngle, unsigned int x, unsigned int y, unsi
     const unsigned char b = rgba[2];  // 0 - 255
     const unsigned char a = rgba[3];  // 0: fully transparent, 255: fully opaque
     const float scale = OswImage::cbScale;
+    const float angle = OswImage::cbAngle;
+
+/*     float centerX = OswImage::cbOffX;
+    float centerY = OswImage::cbOffY;
+
+    // Translate coordinates to the center
+    float translatedX = x;
+    float translatedY = y; */
+
+    // Calculate the original center of the image
+    float original_centre_width = OswImage::cbWidth / 2.0;
+    float original_centre_height = OswImage::cbHeight / 2.0;
+
+    // Translate coordinates to the center
+    float translatedX = OswImage::cbWidth - 1 - x - original_centre_width;
+    float translatedY = OswImage::cbHeight - 1 - y - original_centre_height;
+
+    float newX;
+    float newY;
+
+    // Apply shear rotation
+    float tangent = tan(angle / 2);
+    newX = translatedX-translatedY*tangent;
+    newY = translatedY;
+
+    newY = newX*sin(angle)+newY;
+
+    newX = newX-newY*tangent;
+
+    // Shear
 
     // We pretty much ignore alpha - and just draw the pixel if it's not transparent
     if (a > 0)
-        OswImage::cbGfx->drawPixel(OswImage::cbOffX + x * scale, OswImage::cbOffY + y * scale, rgb565(r, g, b));
+        OswImage::cbGfx->drawPixel(OswImage::cbOffX + newX * scale,  OswImage::cbOffY + newY * scale, rgb565(r, g, b));
 }
